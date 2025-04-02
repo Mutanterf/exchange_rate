@@ -17,10 +17,9 @@ def fetch_and_save_exchange_rate_from_csv_to_db(**kwargs):
     filename = '/tmp/exchange_rates.csv'
     inverse_rates = {}
 
-    # Чтение данных из CSV
     with open(filename, mode='r') as file:
         reader = csv.reader(file)
-        next(reader)  # Пропустить заголовок
+        next(reader) 
         for row in reader:
             currency, rate = row
             inverse_rates[currency] = float(rate)
@@ -28,7 +27,6 @@ def fetch_and_save_exchange_rate_from_csv_to_db(**kwargs):
     pg_hook = PostgresHook(postgres_conn_id="postgres_default")
     
     for currency, rate in inverse_rates.items():
-        # Запись курса валюты в базу данных
         sql = """
             INSERT INTO exchange_rates (date, currency, rate)
             VALUES (%s, %s, %s)
